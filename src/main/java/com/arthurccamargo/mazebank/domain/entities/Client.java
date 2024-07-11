@@ -19,10 +19,8 @@ public class Client {
     @GeneratedValue
     private UUID id;
     private String name;
-    private String password;
     private String cpf;
+    private String password;
     private String email;
     private String phone;
-    @OneToMany(mappedBy = "client")
-    private Set<CheckingAccount> checkingAccounts = new HashSet<>();
 }
