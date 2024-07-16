@@ -5,10 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -16,8 +12,8 @@ import java.util.UUID;
 @Table(name = "client")
 public class Client {
     @Id
-    @GeneratedValue
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     private String name;
     private String cpf;
     private String password;
