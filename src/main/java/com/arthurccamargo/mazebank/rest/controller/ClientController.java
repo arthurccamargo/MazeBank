@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 @RestController
 @RequestMapping("/api/client")
@@ -20,7 +21,7 @@ public class ClientController {
     public Client getClienteById( @PathVariable Integer id) {
         return clientRepository
                 .findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Cliente Nao Encontrado"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Client Not Found"));
     }
 
     @PostMapping
@@ -29,5 +30,26 @@ public class ClientController {
         return clientRepository.save(client);
     }
 
+    @DeleteMapping("{id}")
+    @ResponseStatus(NO_CONTENT)
+    public void delete(@PathVariable Integer id) {
+        clientRepository
+                .findById(id)
+                .map( client -> {
+                    clientRepository.delete(client);
+                    return Void.class;})
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Client Not Found"));
+    }
 
+    @PutMapping("{id}")
+    @ResponseStatus(NO_CONTENT)
+    public void update( @PathVariable("id") Integer id, @RequestBody Client client) {
+        clientRepository
+                .findById(id)
+                .map(clientDatabase -> {
+                    client.setId(clientDatabase.getId());
+                    clientRepository.save(client);
+                    return client;
+                }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Client Not Found"));
+    }
 }
