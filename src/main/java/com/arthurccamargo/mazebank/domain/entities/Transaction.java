@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,7 +15,7 @@ import java.util.UUID;
 public class Transaction {
     @Id
     @GeneratedValue
-    private UUID id;
+    private Long id;
     @ManyToOne
     private Client sender;
     @ManyToOne

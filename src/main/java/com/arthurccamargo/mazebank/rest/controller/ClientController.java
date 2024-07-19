@@ -18,7 +18,7 @@ public class ClientController {
     public ClientController(ClientRepository clientRepository) {this.clientRepository = clientRepository;}
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
-    public Client getClienteById( @PathVariable Integer id) {
+    public Client getClienteById( @PathVariable Long id) {
         return clientRepository
                 .findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Client Not Found"));
@@ -32,7 +32,7 @@ public class ClientController {
 
     @DeleteMapping("{id}")
     @ResponseStatus(NO_CONTENT)
-    public void delete(@PathVariable Integer id) {
+    public void delete(@PathVariable Long id) {
         clientRepository
                 .findById(id)
                 .map( client -> {
@@ -43,7 +43,7 @@ public class ClientController {
 
     @PutMapping("{id}")
     @ResponseStatus(NO_CONTENT)
-    public void update( @PathVariable("id") Integer id, @RequestBody Client client) {
+    public void update( @PathVariable("id") Long id, @RequestBody Client client) {
         clientRepository
                 .findById(id)
                 .map(clientDatabase -> {

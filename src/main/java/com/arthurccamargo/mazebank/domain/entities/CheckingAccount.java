@@ -5,8 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -15,8 +13,9 @@ import java.util.UUID;
 public class CheckingAccount {
     @Id
     @GeneratedValue
-    private UUID id;
+    private Long id;
     private String accountNumber;
+    private Double balance;
     private Integer transaction_limit;
     @ManyToOne
     @JoinColumn(name = "cliente_id")
