@@ -9,15 +9,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Entity
-@Table(name = "checking_account")
+@Table(name = "checkingaccount")
 public class CheckingAccount {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @ManyToOne
+    @JoinColumn(name = "client_id")
+    private Client client;
+    @Column(name = "account_number")
     private String accountNumber;
     private Double balance;
     private Integer transaction_limit;
-    @ManyToOne
-    @JoinColumn(name = "cliente_id")
-    private Client client;
 }
