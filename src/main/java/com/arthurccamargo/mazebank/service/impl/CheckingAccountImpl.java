@@ -8,7 +8,10 @@ import com.arthurccamargo.mazebank.rest.dto.CheckingAccountDTO;
 import com.arthurccamargo.mazebank.service.CheckingAccountService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.server.ResponseStatusException;
 
 @RequiredArgsConstructor
 @Service
@@ -33,5 +36,11 @@ public class CheckingAccountImpl implements CheckingAccountService {
 
         checkingAccountRepository.save(checkingAccount);
         return checkingAccount;
+    }
+
+    public CheckingAccount getById(Long id) {
+        return checkingAccountRepository
+                .findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Account not found."));
     }
 }
