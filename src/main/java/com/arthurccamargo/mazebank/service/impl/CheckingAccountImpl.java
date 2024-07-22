@@ -10,7 +10,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.server.ResponseStatusException;
 
 @RequiredArgsConstructor
@@ -38,9 +37,9 @@ public class CheckingAccountImpl implements CheckingAccountService {
         return checkingAccount;
     }
 
-    public CheckingAccount getById(Long id) {
+    public CheckingAccount findById(Long id) {
         return checkingAccountRepository
                 .findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Account not found."));
+                .orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 }

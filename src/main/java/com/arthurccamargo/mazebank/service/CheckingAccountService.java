@@ -6,5 +6,5 @@ import com.arthurccamargo.mazebank.rest.dto.CheckingAccountDTO;
 public interface CheckingAccountService {
     CheckingAccount save(CheckingAccountDTO checkingAccountDTO);
 
-    CheckingAccount getById(Long id);
+    CheckingAccount findById(Long id);
 }
