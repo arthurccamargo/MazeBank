@@ -1,5 +1,5 @@
 CREATE TABLE checkingAccount (
-    id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    id INTEGER AUTO_INCREMENT PRIMARY KEY,
     account_number VARCHAR(11) NOT NULL,
     balance DOUBLE,
     transaction_limit INTEGER,

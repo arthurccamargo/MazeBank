@@ -20,8 +20,14 @@ public class Transaction {
     @JoinColumn(name = "sender_id")
     private Client sender;
     @ManyToOne
+    @JoinColumn(name = "sender_account_id")
+    private CheckingAccount senderAccount;
+    @ManyToOne
     @JoinColumn(name = "receiver_id")
     private Client receiver;
+    @ManyToOne
+    @JoinColumn(name = "receiver_account_id")
+    private CheckingAccount receiverAccount;
     private Double amount;
     private LocalDateTime date;
 }

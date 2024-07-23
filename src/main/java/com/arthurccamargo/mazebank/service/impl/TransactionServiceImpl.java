@@ -1,7 +1,9 @@
 package com.arthurccamargo.mazebank.service.impl;
 
+import com.arthurccamargo.mazebank.domain.entities.CheckingAccount;
 import com.arthurccamargo.mazebank.domain.entities.Client;
 import com.arthurccamargo.mazebank.domain.entities.Transaction;
+import com.arthurccamargo.mazebank.repositories.CheckingAccountRepository;
 import com.arthurccamargo.mazebank.repositories.ClientRepository;
 import com.arthurccamargo.mazebank.repositories.TransactionRepository;
 import com.arthurccamargo.mazebank.rest.dto.TransactionDTO;
@@ -18,11 +20,40 @@ public class TransactionServiceImpl implements TransactionService {
 
     private final TransactionRepository transactionRepository;
     private final ClientRepository clientRepository;
+    private final CheckingAccountRepository checkingAccountRepository;
 
 
     @Override
     @Transactional
     public Transaction save(TransactionDTO transactionDTO) {
+
+        // receiver can be sender
+        // sender can be receiver also
+        Long idSenderAccount = transactionDTO.getSenderAccount();
+        CheckingAccount senderAccount = checkingAccountRepository
+                .findById(idSenderAccount)
+                .orElseThrow( () ->  new RuntimeException("Invalid Account Code."));
+        // sender is the owner of the senderAccount
+        if (senderAccount.getClient().getId() !=  transactionDTO.getSender()){
+            System.out.println(senderAccount.getClient().getId());
+            System.out.println(transactionDTO.getSender());
+            throw new RuntimeException("Invalid Sender Code");
+        }
+
+        Long idReceiverAccount = transactionDTO.getReceiverAccount();
+        CheckingAccount receiverAccount = checkingAccountRepository
+                .findById(idReceiverAccount)
+                .orElseThrow( () ->  new RuntimeException("Invalid Account Code."));
+        // receiver is the owner of the receiverAccount
+        if (receiverAccount.getClient().getId() !=  transactionDTO.getReceiver()){
+            throw new RuntimeException("Invalid Receiver Code");
+        }
+
+        // senderAccount must be different from receiverAccount
+        if (transactionDTO.getSenderAccount() == transactionDTO.getReceiverAccount()){
+            throw new RuntimeException("Sender Account and Receiver Account are equal");
+        }
+
         Long idSender = transactionDTO.getSender();
         Client sender = clientRepository
                 .findById(idSender)
@@ -33,12 +64,21 @@ public class TransactionServiceImpl implements TransactionService {
                 .findById(idReceiver)
                 .orElseThrow( () ->  new RuntimeException("Invalid Client Code."));
 
+        //account manipulation
+        senderAccount.setBalance(senderAccount.getBalance() - transactionDTO.getAmount());
+        receiverAccount.setBalance(receiverAccount.getBalance() + transactionDTO.getAmount());
+
+        // create transaction
         Transaction transaction = new Transaction();
         transaction.setSender(sender);
         transaction.setReceiver(receiver);
+        transaction.setSenderAccount(senderAccount);
+        transaction.setReceiverAccount(receiverAccount);
         transaction.setDate(LocalDateTime.now());
         transaction.setAmount(transactionDTO.getAmount());
 
+        checkingAccountRepository.save(senderAccount);
+        checkingAccountRepository.save(receiverAccount);
         transactionRepository.save(transaction);
         return transaction;
     }

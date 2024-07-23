@@ -10,5 +10,7 @@ import lombok.NoArgsConstructor;
 public class TransactionDTO {
     private Long sender;
     private Long receiver;
+    private Long senderAccount;
+    private Long receiverAccount;
     private Double amount;
 }
