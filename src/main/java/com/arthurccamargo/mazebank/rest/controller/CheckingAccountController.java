@@ -2,6 +2,7 @@ package com.arthurccamargo.mazebank.rest.controller;
 
 import com.arthurccamargo.mazebank.domain.entities.CheckingAccount;
 import com.arthurccamargo.mazebank.rest.dto.CheckingAccountDTO;
+import com.arthurccamargo.mazebank.rest.dto.InfoAccountDTO;
 import com.arthurccamargo.mazebank.service.CheckingAccountService;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +25,7 @@ public class CheckingAccountController {
     }
 
     @GetMapping("{id}")
-    public CheckingAccount getById(@PathVariable Long id) {
+    public InfoAccountDTO getById(@PathVariable Long id) {
         return service
                 .findById(id);
     }
