@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,12 +14,14 @@ import java.time.LocalDate;
 @Table(name = "transaction")
 public class Transaction {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
+    @JoinColumn(name = "sender_id")
     private Client sender;
     @ManyToOne
+    @JoinColumn(name = "receiver_id")
     private Client receiver;
     private Double amount;
-    private LocalDate date;
+    private LocalDateTime date;
 }
