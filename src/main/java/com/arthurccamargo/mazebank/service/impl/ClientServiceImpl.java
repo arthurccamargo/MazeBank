@@ -2,6 +2,7 @@ package com.arthurccamargo.mazebank.service.impl;
 
 import com.arthurccamargo.mazebank.domain.entities.Client;
 import com.arthurccamargo.mazebank.repositories.ClientRepository;
+import com.arthurccamargo.mazebank.rest.dto.ClientDTO;
 import com.arthurccamargo.mazebank.service.ClientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,10 +21,17 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Client findById(Long id) {
-        return clientRepository
+    public ClientDTO findById(Long id) {
+        Client client = clientRepository
                 .findById(id)
                 .orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        ClientDTO clientDTO = new ClientDTO();
+        clientDTO.setName(client.getName());
+        clientDTO.setCpf(client.getCpf());
+        clientDTO.setEmail(client.getEmail());
+        clientDTO.setPhone(client.getPhone());
+        return clientDTO;
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.arthurccamargo.mazebank.rest.controller;
 
-import com.arthurccamargo.mazebank.domain.entities.CheckingAccount;
 import com.arthurccamargo.mazebank.domain.entities.Transaction;
 import com.arthurccamargo.mazebank.exception.OutOfLimitException;
 import com.arthurccamargo.mazebank.rest.dto.InfoAccountDTO;

@@ -1,6 +1,7 @@
 package com.arthurccamargo.mazebank.rest.controller;
 
 import com.arthurccamargo.mazebank.domain.entities.Client;
+import com.arthurccamargo.mazebank.rest.dto.ClientDTO;
 import com.arthurccamargo.mazebank.service.ClientService;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +17,7 @@ public class ClientController {
     public ClientController(ClientService service) {this.service = service;}
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
-    public Client getById( @PathVariable Long id) {
+    public ClientDTO getById(@PathVariable Long id) {
         return service
                 .findById(id);
     }
