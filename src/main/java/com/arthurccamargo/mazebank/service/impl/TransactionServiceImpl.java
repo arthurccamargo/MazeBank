@@ -3,6 +3,9 @@ package com.arthurccamargo.mazebank.service.impl;
 import com.arthurccamargo.mazebank.domain.entities.CheckingAccount;
 import com.arthurccamargo.mazebank.domain.entities.Client;
 import com.arthurccamargo.mazebank.domain.entities.Transaction;
+import com.arthurccamargo.mazebank.exception.EqualAccountsException;
+import com.arthurccamargo.mazebank.exception.ReceiverAccountException;
+import com.arthurccamargo.mazebank.exception.SenderAccountException;
 import com.arthurccamargo.mazebank.repositories.CheckingAccountRepository;
 import com.arthurccamargo.mazebank.repositories.ClientRepository;
 import com.arthurccamargo.mazebank.repositories.TransactionRepository;
@@ -32,12 +35,12 @@ public class TransactionServiceImpl implements TransactionService {
         Long idSenderAccount = transactionDTO.getSenderAccount();
         CheckingAccount senderAccount = checkingAccountRepository
                 .findById(idSenderAccount)
-                .orElseThrow( () ->  new RuntimeException("Invalid Account Code."));
+                .orElseThrow(() -> new RuntimeException("Invalid Account Code."));
         // sender is the owner of the senderAccount
         if (senderAccount.getClient().getId() !=  transactionDTO.getSender()){
             System.out.println(senderAccount.getClient().getId());
             System.out.println(transactionDTO.getSender());
-            throw new RuntimeException("Invalid Sender Code");
+            throw new SenderAccountException();
         }
 
         Long idReceiverAccount = transactionDTO.getReceiverAccount();
@@ -46,12 +49,12 @@ public class TransactionServiceImpl implements TransactionService {
                 .orElseThrow( () ->  new RuntimeException("Invalid Account Code."));
         // receiver is the owner of the receiverAccount
         if (receiverAccount.getClient().getId() !=  transactionDTO.getReceiver()){
-            throw new RuntimeException("Invalid Receiver Code");
+            throw new ReceiverAccountException();
         }
 
         // senderAccount must be different from receiverAccount
         if (transactionDTO.getSenderAccount() == transactionDTO.getReceiverAccount()){
-            throw new RuntimeException("Sender Account and Receiver Account are equal");
+            throw new EqualAccountsException();
         }
 
         Long idSender = transactionDTO.getSender();
